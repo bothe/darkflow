@@ -1,4 +1,4 @@
-aeroplane
-bicycle
-bird
-boat
+electric_poles
+trafficsignals
+varioussignals
+balise
