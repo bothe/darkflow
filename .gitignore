@@ -1,4 +1,3 @@
-
 # Python bytecode
 *.pyc
 
@@ -46,3 +45,5 @@ ckpt/*
 .cache/
 venv/
 .vscode/
+images/
+annotations/
