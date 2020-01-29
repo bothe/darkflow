@@ -1,6 +1,9 @@
 - step:
     name: train
     image: tensorflow/tensorflow:1.13.1-gpu-py3
-    command: 
-      - apt-get install wget
-      - bash train_configs.sh
+    command:
+        - pip install Cython
+        - pip install opencv-python
+        - pip install matplotlib
+        - apt-get install wget
+        - bash train_configs.sh
