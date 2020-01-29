@@ -45,5 +45,5 @@ ckpt/*
 .cache/
 venv/
 .vscode/
-images/
-annotations/
+#images/
+#annotations/
