@@ -3,6 +3,11 @@
     image: tensorflow/tensorflow:1.13.1-gpu-py3
     command:
         - pip install Cython
+        - apt-get install build-essential cmake pkg-config
+        - apt-get install libjpeg8-dev libtiff5-dev libjasper-dev libpng12-dev
+        - apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+        - apt-get install libxvidcore-dev libx264-dev
+        - apt-get install libatlas-base-dev gfortran
         - pip install opencv-python
         - pip install matplotlib
         - apt update && apt install -y libsm6 libxext6
