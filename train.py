@@ -8,8 +8,8 @@ options = {"model": "cfg/custom-yolov2-tiny-voc.cfg",
            "epoch": 100,
            "gpu": 1.0,
            "train": True,
-           "annotation": "./annotations/",
-           "dataset": "./images/"}
+           "annotation": "./train-labels/",
+           "dataset": "./train-images/"}
 # load network
 tfnet = TFNet(options)
 # start train
