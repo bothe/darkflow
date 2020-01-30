@@ -1,7 +1,9 @@
 import os
 import shutil
 import random
-def train_test_split(samples=200):
+import sys
+
+def train_test_split(samples):
     images=os.listdir('images/')
     labels=os.listdir('annotations/')
     all_data=list(zip(sorted(images),sorted(labels)))
@@ -15,4 +17,4 @@ def train_test_split(samples=200):
         else:
             return
 if __name__ == "__main__":
-    train_test_split()
+    train_test_split(int(sys.argv[1]))
