@@ -1,13 +1,13 @@
 - step:
-    name: train
-    image: tensorflow/tensorflow:1.13.1-gpu-py3
-    command:
-        - pip install Cython
-        - apt update
-        - pip install --upgrade pip
-        - apt-get install libxrender1
-        - pip install opencv-python
-        - pip install matplotlib
-        - pip install numpy
-        - apt-get install libXrender.so.1
-        - bash train_configs.sh
+      name: train
+      image: tensorflow/tensorflow:1.13.1-gpu-py3
+      command:
+          - pip install Cython
+          - apt-get update
+          - pip install --upgrade pip
+          - apt-get install -y libsm6 libxext6 libxrender-dev
+          - apt install libfontconfig1 libxrender1
+          - pip install opencv-python
+          - pip install matplotlib
+          - pip install numpy
+          - bash train_configs.sh
