@@ -12,3 +12,4 @@
           - pip install matplotlib
           - pip install numpy
           - bash train_configs.sh
+          - cp -r ckpt/ /valohai/outputs # save weights
