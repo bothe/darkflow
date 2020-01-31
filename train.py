@@ -5,7 +5,7 @@ import cv2
 options = {"model": "cfg/custom-yolov2-tiny-voc.cfg", 
            "load": "bin/yolov2-tiny-voc.weights",
            "batch": 64,
-           "epoch": 400,
+           "epoch": 150,
            "gpu": 1.0,
            "train": True,
            "annotation": "./train-labels/",
