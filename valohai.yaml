@@ -4,12 +4,14 @@
       command:
           - pip install Cython
           - apt-get update
-          - apt-get install wget
           - pip install --upgrade pip
           - apt-get install -y libsm6 libxext6 libxrender-dev
           - apt install libfontconfig1 libxrender1
           - pip install opencv-python
           - pip install matplotlib
           - pip install numpy
+          - apt-get install tar
+          - tar -zxvf c_annotations.tar.gz && rm -r c_annotations.tar.gz
           - bash train_configs.sh
           - cp -r ckpt/ /valohai/outputs # save weights
+          
