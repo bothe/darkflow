@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from darkflow.net.build import TFNet
 import cv2
-options = {"model": "cfg/custom-yolo-voc.cfg", 
-           "load": "bin/yolov2-tiny-voc.weights",
+options = {"model": "cfg/custom-yolov3-spp.cfg", 
+           "load": "bin/yolov3-spp.weights",
            "batch": 64,
            "epoch": 150,
            "gpu": 1.0,
