@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from darkflow.net.build import TFNet
 import cv2
-options = {"model": "cfg/custom-yolov2-tiny-voc.cfg", 
+options = {"model": "cfg/custom-yolo-voc.cfg", 
            "load": "bin/yolov2-tiny-voc.weights",
            "batch": 64,
            "epoch": 150,
