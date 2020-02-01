@@ -6,7 +6,7 @@ options = {"model": "cfg/custom-yolov2.cfg",
            "load": "bin/yolov2.weights",
            "batch": 64,
            "epoch": 150,
-           "gpu": 1.0,
+           "gpu": 0.8,
            "train": True,
            "annotation": "./train-labels/",
            "dataset": "./train-images/"}
