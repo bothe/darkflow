@@ -4,7 +4,7 @@ from darkflow.net.build import TFNet
 import cv2
 options = {"model": "cfg/custom-yolov2.cfg", 
            "load": "bin/yolov2.weights",
-           "batch": 64,
+           "batch": 8,
            "epoch": 150,
            "gpu": 0.8,
            "train": True,
