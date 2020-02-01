@@ -5,7 +5,7 @@ tar -zxvf images-rest.tar.gz -C images/ && rm -r images-rest.tar.gz
 mkdir bin
 cd bin/
 echo "download pretrained tiny yolo voc weights"
-wget 'https://pjreddie.com/media/files/yolov3-spp.weights'
+wget 'https://pjreddie.com/media/files/yolov2.weights'
 cd ../
 echo "making checkpoints directory"
 mkdir ckpt
