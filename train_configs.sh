@@ -12,7 +12,7 @@ mkdir ckpt
 echo "prepare train samples"
 mkdir train-images
 mkdir train-labels
-python train_test_split.py 400
+python train_test_split.py 800
 echo "installing darkflow"
 pip install .
 pip install -e .
