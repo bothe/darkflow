@@ -18,7 +18,7 @@
           - cp -r ckpt/ /valohai/outputs # save weights
           
 - step:
-        name: test_predict
-        image: tensorflow/tensorflow:1.13.1-gpu-py3
-        inputs: datum://017002ca-40df-f4eb-190b-d9a69b461cd0 
-        command: cd /valohai/inputs/ && pwd && ls
+      name: test_predict
+      image: tensorflow/tensorflow:1.13.1-gpu-py3
+      inputs: datum://017002ca-40df-f4eb-190b-d9a69b461cd0 
+      command: cd /valohai/inputs/ && pwd && ls
