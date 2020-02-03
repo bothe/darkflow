@@ -5,7 +5,7 @@ import cv2
 options = {"model": "cfg/custom-yolov2.cfg", 
            "load": "bin/yolov2.weights",
            "batch": 8,
-           "epoch": 500,
+           "epoch": 100,
            'momentum': 0.7,
            "gpu": 1.0,
            "train": True,
