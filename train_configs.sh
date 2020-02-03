@@ -12,8 +12,8 @@ mkdir ckpt
 echo "prepare train samples"
 mkdir train-images
 mkdir train-labels
-cp -r images/.* train-images/
-cp -r c_annotations/.* train-labels/
+cd images/ && cp -r . /valohai/repository/train-images && cd ../
+cd c_annotations/ && cp -r . /valohai/repository/train-labels && cd ../
 # python train_test_split.py 900
 echo "installing darkflow"
 pip install .
