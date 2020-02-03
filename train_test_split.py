@@ -18,3 +18,4 @@ def train_test_split(samples):
             return
 if __name__ == "__main__":
     train_test_split(int(sys.argv[1]))
+    
