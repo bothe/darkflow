@@ -12,6 +12,8 @@ mkdir ckpt
 echo "prepare train samples"
 mkdir train-images
 mkdir train-labels
+echo "extract annots"
+tar -zxvf c_annotations.tar.gz && rm -r c_annotations.tar.gz
 cd images/ && cp -r . /valohai/repository/train-images && cd ../
 cd c_annotations/ && cp -r . /valohai/repository/train-labels && cd ../
 # python train_test_split.py 900
