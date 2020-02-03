@@ -1,5 +1,6 @@
 import cv2
 import os
+import numpy as np
 from darkflow.net.build import TFNet
 
 
