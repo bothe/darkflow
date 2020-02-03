@@ -18,19 +18,23 @@
     name: test_predict
     image: tensorflow/tensorflow:1.13.1-gpu-py3
     inputs: # weights
-      - name: 
+      - name: checkpoint
         default: datum://017008f3-3bd1-9150-5e08-4ce67f3a0ca5
-      - name: 
+      - name: custom-yolov2-5000.index
         default: datum://017008ef-e0f5-70d5-1332-c6923e1e947f
-      - name: 
+      - name: custom-yolov2-5000.profile
         default: datum://017008f1-78b7-f8ec-b6b7-4449f33e6f68
-      - name: 
+      - name: custom-yolov2-5000.meta
         default: datum://017008f1-3b5a-d80d-0abc-0fb43a65e57f
-      - name:
+      - name: custom-yolov2-5000.data-00000-of-00001
         default: datum://017008ef-5e97-a1f0-f946-d846ecf1903f
     command:
       - mkdir ckpt/
-      - cp -r /valohai/inputs/.* /valohai/repository/ckpt/ # copy new weights
+      - cp -r /valohai/inputs/checkpoint/.* /valohai/repository/ckpt/
+      - cp -r /valohai/inputs/custom-yolov2-5000.index/.* /valohai/repository/ckpt/
+      - cp -r /valohai/inputs/custom-yolov2-5000.profile/.* /valohai/repository/ckpt/
+      - cp -r /valohai/inputs/custom-yolov2-5000.meta/.* /valohai/repository/ckpt/
+      - cp -r /valohai/inputs/custom-yolov2-5000.data-00000-of-00001/.* /valohai/repository/ckpt/ # copy new weights
       - pip install Cython
       - apt-get update
       - pip install --upgrade pip
