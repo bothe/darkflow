@@ -37,7 +37,5 @@ for image in os.listdir('images/'):
     original_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB)
     results = tfnet.return_predict(original_img)
     print(results)
-    with open('/valohai/outputs/'+image.split('.')[0]+'.txt', 'w') as pred:
-        pred.writelines(results)
     cv2.imwrite('/valohai/outputs/'+'prediction' +
                 image, boxing(original_img, results))
