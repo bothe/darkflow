@@ -20,9 +20,9 @@ def boxing(original_img, predictions):
 
         if confidence > 0.5:
             newImage = cv2.rectangle(
-                newImage, (top_y, top_x), (btm_y, btm_x), (173, 106, 13), 8)
+                newImage, (top_y, top_x), (btm_y, btm_x), (0,0,255), 8)
             newImage = cv2.putText(newImage, label, (top_y, top_x-5),
-                                   cv2.FONT_HERSHEY_COMPLEX_SMALL, 3, (0, 255, 0), 3, cv2.LINE_AA)
+                                   cv2.FONT_HERSHEY_COMPLEX_SMALL, 3, (13, 106, 173), 3, cv2.LINE_AA)
 
     return newImage
 
@@ -36,6 +36,8 @@ for image in os.listdir('images/'):
     original_img = cv2.imread("images/"+image)
     original_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB)
     results = tfnet.return_predict(original_img)
+    if not results:
+        continue
     print(results)
     cv2.imwrite('/valohai/outputs/'+'prediction' +
                 image, boxing(original_img, results))
