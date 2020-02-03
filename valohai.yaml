@@ -11,6 +11,7 @@
       - pip install matplotlib
       - pip install numpy
       - apt-get install tar
+      - apt-get install wget
       - tar -zxvf c_annotations.tar.gz && rm -r c_annotations.tar.gz
       - bash train_configs.sh
       - cp -r ckpt/ /valohai/outputs # save weights
