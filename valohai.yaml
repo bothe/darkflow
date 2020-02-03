@@ -30,11 +30,11 @@
         default: datum://017008ef-5e97-a1f0-f946-d846ecf1903f
     command:
       - mkdir ckpt/
-      - cp /valohai/inputs/checkpoint /valohai/repository/ckpt/
-      - cp /valohai/inputs/custom-yolov2-5000.index /valohai/repository/ckpt/
-      - cp /valohai/inputs/custom-yolov2-5000.profile /valohai/repository/ckpt/
-      - cp /valohai/inputs/custom-yolov2-5000.meta /valohai/repository/ckpt/
-      - cp /valohai/inputs/custom-yolov2-5000.data-00000-of-00001 /valohai/repository/ckpt/ # copy new weights
+      - cp /valohai/inputs/checkpoint/checkpoint /valohai/repository/ckpt/
+      - cp /valohai/inputs/custom-yolov2-5000.index/custom-yolov2-5000.index /valohai/repository/ckpt/
+      - cp /valohai/inputs/custom-yolov2-5000.profile/custom-yolov2-5000.profile /valohai/repository/ckpt/
+      - cp /valohai/inputs/custom-yolov2-5000.meta/custom-yolov2-5000.meta /valohai/repository/ckpt/
+      - cp /valohai/inputs/custom-yolov2-5000.data-00000-of-00001/custom-yolov2-5000.data-00000-of-00001 /valohai/repository/ckpt/ # copy new weights
       - pip install Cython
       - apt-get update
       - pip install --upgrade pip
