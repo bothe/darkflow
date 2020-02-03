@@ -35,7 +35,7 @@ tfnet.load_from_ckpt()
 for image in os.listdir('images/'):
     original_img = cv2.imread("images/"+image)
     original_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB)
-    results = json.dumps(tfnet.return_predict(original_img))
+    results = json.dumps(tfnet.return_predict(original_img),use_decimal=True)
     with open('/valohai/outputs/'+image.split('.')[0]+'.txt', 'w') as pred:
         pred.writelines(results)
     cv2.imwrite('/valohai/outputs/'+'prediction' +
