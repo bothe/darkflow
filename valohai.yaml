@@ -1,26 +1,43 @@
 - step:
-      name: train
-      image: tensorflow/tensorflow:1.13.1-gpu-py3
-      command:
-          - pip install Cython
-          - apt-get update
-          - apt-get install wget
-          - pip install --upgrade pip
-          - apt-get install -y libsm6 libxext6 libxrender-dev
-          - apt install libfontconfig1 libxrender1
-          - pip install opencv-python
-          - pip install matplotlib
-          - pip install numpy
-          - apt-get install tar
-          - mkdir c_annotations 
-          - tar -zxvf c_annotations.tar.gz -C c_annotations/ && rm -r c_annotations.tar.gz
-          - bash train_configs.sh
-          - cp -r ckpt/ /valohai/outputs # save weights
-          
+    name: train
+    image: tensorflow/tensorflow:1.13.1-gpu-py3
+    command:
+      - pip install Cython
+      - apt-get update
+      - pip install --upgrade pip
+      - apt-get install -y libsm6 libxext6 libxrender-dev
+      - apt install libfontconfig1 libxrender1
+      - pip install opencv-python
+      - pip install matplotlib
+      - pip install numpy
+      - apt-get install tar
+      - tar -zxvf c_annotations.tar.gz && rm -r c_annotations.tar.gz
+      - bash train_configs.sh
+      - cp -r ckpt/ /valohai/outputs # save weights
 - step:
-      name: test_predict
-      image: tensorflow/tensorflow:1.13.1-gpu-py3
-      inputs: 
-          - name: weights
-            default: datum://017002ca-40df-f4eb-190b-d9a69b461cd0 
-      command: cd /valohai/inputs/ && pwd && ls
+    name: test_predict
+    image: tensorflow/tensorflow:1.13.1-gpu-py3
+    inputs: # weights
+      - name: checkpoint
+        default: datum://017008f3-3bd1-9150-5e08-4ce67f3a0ca5
+      - name: custom-yolov2-5000.index
+        default: datum://017008ef-e0f5-70d5-1332-c6923e1e947f
+      - name: custom-yolov2-5000.profile
+        default: datum://017008f1-78b7-f8ec-b6b7-4449f33e6f68
+      - name: custom-yolov2-5000.meta
+        default: datum://017008f1-3b5a-d80d-0abc-0fb43a65e57f
+      - name: custom-yolov2-5000.data-00000-of-00001
+        default: datum://017008ef-5e97-a1f0-f946-d846ecf1903f
+    command:
+      - mkdir ckpt/
+      - cp -r /valohai/inputs/.* /valohai/repository/ckpt/ # copy new weights
+      - pip install Cython
+      - apt-get update
+      - pip install --upgrade pip
+      - apt-get install -y libsm6 libxext6 libxrender-dev
+      - apt install libfontconfig1 libxrender1
+      - pip install opencv-python
+      - pip install numpy
+      - pip install . # install darkflow
+      - pip install -e .
+      - python predict.py
