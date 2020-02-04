@@ -18,4 +18,4 @@ def train_test_split(ratio):
 
 
 if __name__ == "__main__":
-    train_test_split(int(sys.argv[1]))
+    train_test_split(float(sys.argv[1]))
