@@ -1,6 +1,6 @@
 import cv2
 import os
-import json
+import sys
 import numpy as np
 from darkflow.net.build import TFNet
 
@@ -27,17 +27,47 @@ def boxing(original_img, predictions):
     return newImage
 
 
-options = {"model": "cfg/custom-yolov2.cfg",
-           "load": -1,
-           "gpu": 1.0}
-tfnet = TFNet(options)
-tfnet.load_from_ckpt()
-for image in os.listdir('test-images/'):
-    original_img = cv2.imread("test-images/"+image)
-    original_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB)
-    results = tfnet.return_predict(original_img)
-    if not results:
-        continue
-    print(results)
-    cv2.imwrite('/valohai/outputs/'+'prediction' +
-                image, boxing(original_img, results))
+def predict(source):
+    options = {"model": "cfg/custom-yolov2.cfg",
+               "load": -1,
+               "gpu": 1.0}
+    tfnet = TFNet(options)
+    tfnet.load_from_ckpt()
+    if source == 'image':
+        for image in os.listdir('test-images/'):
+            original_img = cv2.imread("test-images/"+image)
+            original_img = cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB)
+            results = tfnet.return_predict(original_img)
+            if not results:
+                continue
+            print(results)
+            cv2.imwrite('/valohai/outputs/'+'prediction' +
+                        image, boxing(original_img, results))
+    elif source == 'video':  # predict on video
+        cap = cv2.VideoCapture('GP010080.mov')
+        width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+        out = cv2.VideoWriter('/valohai/outputs/GP010080_preds.mov', fourcc,
+                              20.0, (int(width), int(height)))
+        while(True):
+            # Capture frame-by-frame
+            ret, frame = cap.read()
+
+            if ret == True:
+                frame = np.asarray(frame)
+                results = tfnet2.return_predict(frame)
+                new_frame = boxing(frame, results)
+                # Display the resulting frame
+                out.write(new_frame)
+            else:
+                break
+
+        # When everything done, release the capture
+        cap.release()
+        out.release()
+        cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    predict(sys.argv[1])
