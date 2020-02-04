@@ -13,10 +13,10 @@
       - apt-get install tar
       - apt-get install wget
       - bash train_configs.sh
-      - python predict.py
+      - python predict.py image
       - cp -r ckpt/ /valohai/outputs # save weights
 - step:
-    name: test_predict
+    name: video_predict
     image: tensorflow/tensorflow:1.13.1-gpu-py3
     inputs: # weights
       - name: checkpoint
@@ -45,4 +45,5 @@
       - pip install numpy
       - pip install . # install darkflow
       - pip install -e .
-      - python predict.py
+      - bash video_configs.sh
+      - python predict.py video
