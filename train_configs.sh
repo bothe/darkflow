@@ -9,16 +9,19 @@ wget 'https://pjreddie.com/media/files/yolov2.weights'
 cd ../
 echo "making checkpoints directory"
 mkdir ckpt
-echo "prepare train samples"
+echo "prepare train test samples"
 mkdir train-images
 mkdir train-labels
+mkdir test-images
+mkdir test-labels
+mkdir c_annotations
 echo "extract annots"
-tar -zxvf c_annotations.tar.gz -C train-labels && rm -r c_annotations.tar.gz
-cd images/ && cp -r . /valohai/repository/train-images && cd ../
-# python train_test_split.py 900
+tar -zxvf c_annotations.tar.gz -C c_annotations && rm -r c_annotations.tar.gz
+echo "train test split"
+python train_test_split.py 0.7
 echo "installing darkflow"
 pip install .
 pip install -e .
 
-echo "start training :)"
+echo "start training :) <3"
 python train.py
