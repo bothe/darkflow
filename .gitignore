@@ -48,3 +48,4 @@ venv/
 
 #Training data and checkpoints and everything
 /data_demo_train/
+/data_valves/
