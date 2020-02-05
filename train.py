@@ -25,7 +25,8 @@ options = {"model": base_data_dir + "/custom-yolov2.cfg",
            "train": True,
            "save": 16,
            "annotation": base_data_dir + "/annotations/",
-           "dataset": base_data_dir + "/images/"}
+           "dataset": base_data_dir + "/images/",
+           "labels": base_data_dir + "/labels.txt"}
 
 # load network
 tfnet = TFNet(options)

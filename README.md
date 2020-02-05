@@ -15,6 +15,10 @@ See demo below or see on [this imgur](http://i.imgur.com/EyZZKAA.gif)
 
 Python3, tensorflow 1.0, numpy, opencv 3.
 
+Tested with Python3, tensorflow 1.15, numpy 1.16, opencv 3.4.2.
+
+tf-gpu (not working, perhaps issue with tf-version I have tf-gpu-version 1.12.0)
+
 ### Getting started
 
 You can choose _one_ of the following three ways to get started with darkflow.
@@ -33,6 +37,39 @@ You can choose _one_ of the following three ways to get started with darkflow.
     ```
     pip install .
     ```
+
+
+## Using darkflow from another python application
+
+Please note that `return_predict(img)` must take an `numpy.ndarray`. 
+Your image must be loaded beforehand and passed to `return_predict(img)`. 
+Passing the file path won't work.
+
+Result from `return_predict(img)` will be a list of dictionaries representing
+each detected object's values in the same format as the JSON output listed above.
+
+Best way is to create a ```base_data_directory``` with ```yolov2.cfg``` config 
+and ```labels.txt``` file, and
+```annotations```, ```images```, ```logs```, and ```ckpt``` directories.
+
+See [train.py](train.py) for detailed example!
+
+```python
+from darkflow.net.build import TFNet
+import cv2
+
+options = {"model": "yolo.cfg", "load": "bin/yolo.weights"}
+
+tfnet = TFNet(options)
+
+# train the model
+tfnet.train()
+
+# OR prediction with trained model
+imgcv = cv2.imread("./sample_img/sample_dog.jpg")
+result = tfnet.return_predict(imgcv)
+print(result)
+```
 
 ## Update
 
@@ -233,25 +270,6 @@ flow --model cfg/yolo-new.cfg --load bin/yolo-new.weights --demo videofile.avi -
 To use your webcam/camera, simply replace `videofile.avi` with keyword `camera`.
 
 To save a video with predicted bounding box, add `--saveVideo` option.
-
-## Using darkflow from another python application
-
-Please note that `return_predict(img)` must take an `numpy.ndarray`. Your image must be loaded beforehand and passed to `return_predict(img)`. Passing the file path won't work.
-
-Result from `return_predict(img)` will be a list of dictionaries representing each detected object's values in the same format as the JSON output listed above.
-
-```python
-from darkflow.net.build import TFNet
-import cv2
-
-options = {"model": "cfg/yolo.cfg", "load": "bin/yolo.weights", "threshold": 0.1}
-
-tfnet = TFNet(options)
-
-imgcv = cv2.imread("./sample_img/sample_dog.jpg")
-result = tfnet.return_predict(imgcv)
-print(result)
-```
 
 
 ## Save the built graph to a protobuf file (`.pb`)

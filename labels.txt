@@ -1,4 +1,0 @@
-electric_poles
-trafficsignals
-varioussignals
-balise
