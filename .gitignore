@@ -38,9 +38,6 @@ summary/
 #Built graphs
 built_graph/
 
-#Training checkpoints
-/ckpt/
-
 #pytest cache
 .idea/
 .cache/
@@ -48,3 +45,6 @@ venv/
 .vscode/
 #images/
 #annotations/
+
+#Training data and checkpoints and everything
+/data_demo_train/
