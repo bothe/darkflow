@@ -1,5 +1,5 @@
-import os
 import math
+import os
 import pickle
 import time
 from multiprocessing.pool import ThreadPool
@@ -41,14 +41,10 @@ def train(self):
 
     for i, (x_batch, datum) in enumerate(batches):
         start = time.time()
-        if not i: self.say(train_stats.format(
-            self.FLAGS.lr, self.FLAGS.batch,
-            self.FLAGS.epoch, self.FLAGS.save
-        ))
+        if not i:
+            self.say(train_stats.format(self.FLAGS.lr, self.FLAGS.batch, self.FLAGS.epoch, self.FLAGS.save))
 
-        feed_dict = {
-            loss_ph[key]: datum[key]
-            for key in loss_ph}
+        feed_dict = {loss_ph[key]: datum[key] for key in loss_ph}
         feed_dict[self.inp] = x_batch
         feed_dict.update(self.feed)
 
@@ -81,8 +77,7 @@ def train(self):
 
 
 def return_predict(self, im):
-    assert isinstance(im, np.ndarray), \
-        'Image is not a np.ndarray'
+    assert isinstance(im, np.ndarray), 'Image is not a np.ndarray'
     h, w, _ = im.shape
     im = self.framework.resize_input(im)
     this_inp = np.expand_dims(im, 0)
@@ -136,21 +131,18 @@ def predict(self):
         self.say('Forwarding {} inputs ...'.format(len(inp_feed)))
         start = time.time()
         out = self.sess.run(self.out, feed_dict)
-        stop = time.time();
+        stop = time.time()
         last = stop - start
-        self.say('Total time = {}s / {} inps = {} ips'.format(
-            last, len(inp_feed), len(inp_feed) / last))
+        self.say('Total time = {}s / {} inps = {} ips'.format(last, len(inp_feed), len(inp_feed) / last))
 
         # Post processing
         self.say('Post processing {} inputs ...'.format(len(inp_feed)))
         start = time.time()
-        pool.map(lambda p: (lambda i, prediction:
-                            self.framework.postprocess(
-                                prediction, os.path.join(inp_path, this_batch[i])))(*p),
+        pool.map(lambda p: (
+            lambda i, prediction: self.framework.postprocess(prediction, os.path.join(inp_path, this_batch[i])))(*p),
                  enumerate(out))
-        stop = time.time();
+        stop = time.time()
         last = stop - start
 
         # Timing
-        self.say('Total time = {}s / {} inps = {} ips'.format(
-            last, len(inp_feed), len(inp_feed) / last))
+        self.say('Total time = {}s / {} inps = {} ips'.format(last, len(inp_feed), len(inp_feed) / last))
