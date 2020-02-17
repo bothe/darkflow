@@ -17,19 +17,28 @@ else:
 options = {"model": base_data_dir + "/custom-yolov2.cfg",
            'load': load,
            "batch": 8,
-           "epoch": 500,
+           "epoch": 10000,
            'momentum': 0.9,
            "trainer": 'adam',
            'summary': base_data_dir + "/logs/",
            "backup": base_data_dir + "/ckpt/",
            "gpu": 1.0,
            "train": True,
-           "save": 100,
+           "save": 1000,
            "annotation": base_data_dir + "/annotations/",
            "dataset": base_data_dir + "/images/",
            "labels": base_data_dir + "/labels.txt"}
 
 # load network
 tfnet = TFNet(options)
+tfnet.savepb()
+
+import tensorflow as tf
+from ext_graph_utils.freeze_graph import freeze_session
+tf.set_learning_phase(0)
+
+frozen_graph = freeze_session(tf.get_session(), output_names=[out.op.name for out in tfnet.out])
+tf.train.write_graph(frozen_graph, "params/pb", "tf_model.pb", as_text=False)
+
 # start train
 tfnet.train()
