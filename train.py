@@ -31,12 +31,20 @@ options = {"model": base_data_dir + "/custom-yolov2.cfg",
 
 # load network
 tfnet = TFNet(options)
-tfnet.savepb()
+# tfnet.savepb()
 
 import tensorflow as tf
+export_dir = "data_valves/built_graph/savedModel"
+tf.saved_model.save(tfnet, export_dir)
+
+# Convert the model.
+converter = tf.lite.TFLiteConverter.from_saved_model(export_dir)
+tflite_model = converter.convert()
+
+
+
 from ext_graph_utils.freeze_graph import freeze_session
 tf.set_learning_phase(0)
-
 frozen_graph = freeze_session(tf.get_session(), output_names=[out.op.name for out in tfnet.out])
 tf.train.write_graph(frozen_graph, "params/pb", "tf_model.pb", as_text=False)
 
