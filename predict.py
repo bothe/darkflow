@@ -1,16 +1,16 @@
-import cv2
 import os
-import sys
+
+import cv2
 import numpy as np
-from darkflow.net.build import TFNet
 
 from config_options import options, base_data_dir
+from darkflow.net.build import TFNet
 
 options = options(base_data_dir, train=False)
 tfnet = TFNet(options)
 
 
-def boxing(original_img, predictions):
+def boxing(original_img, predictions, threshold=0.5):
     newImage = np.copy(original_img)
     for result in predictions:
         top_x = result['topleft']['x']
@@ -20,7 +20,7 @@ def boxing(original_img, predictions):
         confidence = result['confidence']
         label = result['label'] + " " + str(round(confidence, 3))
 
-        if confidence > 0.5:
+        if confidence > threshold:
             newImage = cv2.rectangle(
                 newImage, (top_y, top_x), (btm_y, btm_x), (0, 0, 255), 8)
             newImage = cv2.putText(newImage, label, (top_y, top_x - 5),
@@ -39,7 +39,7 @@ def predict_on_image():
         if not results:
             continue
         print(results)
-        cv2.imwrite(path + 'out/' + 'prediction_' + image, boxing(original_img, results))
+        cv2.imwrite(path + 'out/' + 'prediction_' + image, boxing(original_img, results, threshold=0.5))
 
 
 def predict_on_video():
@@ -54,7 +54,7 @@ def predict_on_video():
         if ret:
             frame = np.asarray(frame)
             results = tfnet.return_predict(frame)
-            new_frame = boxing(frame, results)
+            new_frame = boxing(frame, results, threshold=0.5)
             # Display the resulting frame
             out.write(new_frame)
         else:
