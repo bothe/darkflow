@@ -1,9 +1,9 @@
 from .layer import Layer
 import numpy as np
 
+
 class local_layer(Layer):
-    def setup(self, ksize, c, n, stride, 
-              pad, w_, h_, activation):
+    def setup(self, ksize, c, n, stride, pad, w_, h_, activation):
         self.pad = pad * int(ksize / 2)
         self.activation = activation
         self.stride = stride
@@ -12,10 +12,7 @@ class local_layer(Layer):
         self.w_out = w_
 
         self.dnshape = [h_ * w_, n, c, ksize, ksize]
-        self.wshape = dict({
-            'biases': [h_ * w_ * n],
-            'kernels': [h_ * w_, ksize, ksize, c, n]
-        })
+        self.wshape = dict({'biases': [h_ * w_ * n], 'kernels': [h_ * w_, ksize, ksize, c, n]})
 
     def finalize(self, _):
         weights = self.w['kernels']
@@ -24,10 +21,9 @@ class local_layer(Layer):
         weights = weights.transpose([0,3,4,2,1])
         self.w['kernels'] = weights
 
+
 class conv_extract_layer(Layer):
-    def setup(self, ksize, c, n, stride, 
-              pad, batch_norm, activation,
-              inp, out):
+    def setup(self, ksize, c, n, stride, pad, batch_norm, activation, inp, out):
         if inp is None: inp = range(c)
         self.activation = activation
         self.batch_norm = batch_norm
@@ -36,10 +32,7 @@ class conv_extract_layer(Layer):
         self.pad = pad
         self.inp = inp
         self.out = out
-        self.wshape = dict({
-            'biases': [len(out)], 
-            'kernel': [ksize, ksize, len(inp), len(out)]
-        })
+        self.wshape = dict({'biases': [len(out)], 'kernel': [ksize, ksize, len(inp), len(out)]})
 
     @property
     def signature(self):
@@ -62,38 +55,23 @@ class conv_extract_layer(Layer):
         b = np.take(b, self.out)
         assert1 = k.shape == tuple(self.wshape['kernel'])
         assert2 = b.shape == tuple(self.wshape['biases'])
-        assert assert1 and assert2, \
-        'Dimension not matching in {} recollect'.format(
-            self._signature)
+        assert assert1 and assert2, 'Dimension not matching in {} recollect'.format(self._signature)
         self.w['kernel'] = k
         self.w['biases'] = b
 
 
 class conv_select_layer(Layer):
-    def setup(self, ksize, c, n, stride, 
-              pad, batch_norm, activation,
-              keep_idx, real_n):
+    def setup(self, ksize, c, n, stride, pad, batch_norm, activation, keep_idx, real_n):
         self.batch_norm = bool(batch_norm)
         self.activation = activation
         self.keep_idx = keep_idx
         self.stride = stride
         self.ksize = ksize
         self.pad = pad
-        self.wshape = dict({
-            'biases': [real_n], 
-            'kernel': [ksize, ksize, c, real_n]
-        })
+        self.wshape = dict({'biases': [real_n], 'kernel': [ksize, ksize, c, real_n]})
         if self.batch_norm:
-            self.wshape.update({
-                'moving_variance'  : [real_n], 
-                'moving_mean': [real_n], 
-                'gamma' : [real_n]
-            })
-            self.h['is_training'] = {
-                'shape': (),
-                'feed': True,
-                'dfault': False
-            }
+            self.wshape.update({'moving_variance': [real_n], 'moving_mean': [real_n], 'gamma': [real_n]})
+            self.h['is_training'] = {'shape': (), 'feed': True, 'dfault': False}
 
     @property
     def signature(self):
@@ -122,35 +100,24 @@ class conv_select_layer(Layer):
             self.w['moving_variance'] = np.take(v, idx)
             self.w['gamma'] = np.take(g, idx)
 
+
 class convolutional_layer(Layer):
-    def setup(self, ksize, c, n, stride, 
-              pad, batch_norm, activation):
+    def setup(self, ksize, c, n, stride, pad, batch_norm, activation):
         self.batch_norm = bool(batch_norm)
         self.activation = activation
         self.stride = stride
         self.ksize = ksize
         self.pad = pad
         self.dnshape = [n, c, ksize, ksize] # darknet shape
-        self.wshape = dict({
-            'biases': [n], 
-            'kernel': [ksize, ksize, c, n]
-        })
+        self.wshape = dict({'biases': [n], 'kernel': [ksize, ksize, c, n]})
         if self.batch_norm:
-            self.wshape.update({
-                'moving_variance'  : [n], 
-                'moving_mean': [n], 
-                'gamma' : [n]
-            })
-            self.h['is_training'] = {
-                'feed': True,
-                'dfault': False,
-                'shape': ()
-            }
+            self.wshape.update({'moving_variance': [n], 'moving_mean': [n], 'gamma': [n]})
+            self.h['is_training'] = {'feed': True, 'dfault': False, 'shape': ()}
 
     def finalize(self, _):
         """deal with darknet"""
         kernel = self.w['kernel']
         if kernel is None: return
         kernel = kernel.reshape(self.dnshape)
-        kernel = kernel.transpose([2,3,1,0])
+        kernel = kernel.transpose([2, 3, 1, 0])
         self.w['kernel'] = kernel
