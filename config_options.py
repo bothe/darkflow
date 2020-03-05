@@ -14,21 +14,22 @@ def options(base_data_dir, train=True):
         if not os.path.exists(load):
             print("bin/yolov2.weights is not available, initializing weights from scratch!")
             load = 0
-    options = {"model": base_data_dir + "/custom-yolov2.cfg",
-               'load': load,
-               "batch": 8,
-               "epoch": 1000,
-               'momentum': 0.9,
-               "trainer": 'adam',
-               'summary': base_data_dir + "/logs/",
-               "backup": base_data_dir + "/ckpt/",
-               "binary": base_data_dir + "/bin/",
-               "gpu": 1.0,
-               "train": train,
-               "save": 1000,
-               "imgdir": base_data_dir + "/sample_img/",
-               "annotation": base_data_dir + "/annotations/",
-               "dataset": base_data_dir + "/images/",
-               "labels": base_data_dir + "/labels.txt"}
+    option_dict = {"model": base_data_dir + "/custom-yolov2.cfg",
+                   'load': load,
+                   "batch": 8,
+                   "epoch": 1000,
+                   'momentum': 0.9,
+                   "trainer": 'adam',
+                   'summary': base_data_dir + "/logs/",
+                   "backup": base_data_dir + "/ckpt/",
+                   "binary": base_data_dir + "/bin/",
+                   "gpu": 1.0,
+                   "train": train,
+                   "save": 1000,
+                   "threshold": 0.5,
+                   "imgdir": base_data_dir + "/sample_img/",
+                   "annotation": base_data_dir + "/annotations/",
+                   "dataset": base_data_dir + "/images/",
+                   "labels": base_data_dir + "/labels.txt"}
 
-    return options
+    return option_dict
