@@ -85,22 +85,22 @@ def return_predict(self, im):
 
     out = self.sess.run(self.out, feed_dict)[0]
     boxes = self.framework.findboxes(out)
+
     threshold = self.FLAGS.threshold
     boxesInfo = list()
     for box in boxes:
         tmpBox = self.framework.process_box(box, h, w, threshold)
+        thick = int((h + w) // 200)
+
         if tmpBox is None:
             continue
-        boxesInfo.append({
-            "label": tmpBox[4],
-            "confidence": tmpBox[6],
-            "topleft": {
-                "x": tmpBox[0],
-                "y": tmpBox[2]},
-            "bottomright": {
-                "x": tmpBox[1],
-                "y": tmpBox[3]}
-        })
+
+        left, right, top, bot, mess, max_indx, confidence = tmpBox
+        boxesInfo.append({"label": mess, "confidence": float('%.2f' % confidence),
+                          "topleft": {"x": left, "y": top},
+                          "bottomright": {"x": right, "y": bot},
+                          "color": self.meta["colors"][max_indx], "thick": thick})
+
     return boxesInfo
 
 
