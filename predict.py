@@ -8,24 +8,19 @@ from darkflow.net.build import TFNet
 
 options = options(base_data_dir, train=False)
 tfnet = TFNet(options)
+tfnet.predict()
 
 
-def boxing(original_img, predictions, threshold=0.5):
-    newImage = np.copy(original_img)
-    for result in predictions:
-        top_x = result['topleft']['x']
-        top_y = result['topleft']['y']
-        btm_x = result['bottomright']['x']
-        btm_y = result['bottomright']['y']
-        confidence = result['confidence']
-        label = result['label'] + " " + str(round(confidence, 3))
-
-        if confidence > threshold:
-            newImage = cv2.rectangle(
-                newImage, (top_y, top_x), (btm_y, btm_x), (0, 0, 255), 8)
-            newImage = cv2.putText(newImage, label, (top_y, top_x - 5),
-                                   cv2.FONT_HERSHEY_COMPLEX_SMALL, 3, (13, 106, 173), 3, cv2.LINE_AA)
-    return newImage
+def boxing(original_img, box):
+    if box["confidence"] > options["threshold"]:
+        original_img = cv2.rectangle(original_img,
+                                     (box['topleft']['x'], box['topleft']['y']),
+                                     (box['bottomright']['x'], box['bottomright']['y']),
+                                     box['color'], box["thick"] // 2)
+        original_img = cv2.putText(original_img, box['label'],
+                                   (box['topleft']['x'], box['topleft']['y'] - 12), 0,
+                                   1e-3 * original_img.shape[0], box['color'], int(box["thick"] // 3))
+        return original_img
 
 
 def predict_on_image():
@@ -39,7 +34,9 @@ def predict_on_image():
         if not results:
             continue
         print(results)
-        cv2.imwrite(path + 'out/' + 'prediction_' + image, boxing(original_img, results, threshold=0.5))
+        for box in results:
+            boxing(original_img, box)
+        cv2.imwrite(path + 'out/' + 'prediction_' + image, original_img)
 
 
 def predict_on_video():
@@ -54,9 +51,10 @@ def predict_on_video():
         if ret:
             frame = np.asarray(frame)
             results = tfnet.return_predict(frame)
-            new_frame = boxing(frame, results, threshold=0.5)
-            # Display the resulting frame
-            out.write(new_frame)
+            for box in results:
+                new_frame = boxing(frame, box)
+                # Display the resulting frame
+                out.write(new_frame)
         else:
             break
 
